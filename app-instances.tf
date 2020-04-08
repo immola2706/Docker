@@ -1,11 +1,9 @@
 /* Setup our aws provider */
 provider "aws" {
-	access_key  = "${var.access_key}"
-	secret_key  = "${var.secret_key}"
 	region	=	var.region
 }
 resource "aws_instance" "master" {
-	ami           = "ami-26c43149"
+	ami           = "ami-0fc20dd1da406780b"
 	instance_type = "t2.micro"
 	security_groups = aws_security_group.swarm.name
 	key_name =  aws_key_pair.Kubernetes.key_name
@@ -26,7 +24,7 @@ resource "aws_instance" "master" {
 		]
 	}
 	provisioner "file" {
-		source = "proj"
+		source = "ThirdProject"
 		destination = "/home/ubuntu/"
 	}
 	tags = { 
@@ -36,7 +34,7 @@ resource "aws_instance" "master" {
 
 resource "aws_instance" "slave" {
 	count         = 2
-	ami           = "ami-26c43149"
+	ami           = "ami-0fc20dd1da406780b"
 	instance_type = "t2.micro"
 	security_groups = aws_security_group.swarm.name
 	key_name =  aws_key_pair.Kubernetes.key_name
@@ -53,7 +51,7 @@ resource "aws_instance" "slave" {
 			"sudo apt-get update",
 			"sudo apt-get install apt-transport-https ca-certificates",
 			"sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D",
-			"sudo sh -c 'echo \"deb https://apt.dockerproject.org/repo ubuntu-trusty main\" > /etc/apt/sources.list.d/docker.list'",
+			"sudo sh -c 'echo \"deb https://apt.dockerThirdProjectect.org/repo ubuntu-trusty main\" > /etc/apt/sources.list.d/docker.list'",
 			"sudo apt-get update",
 			"sudo apt-get install -y docker-engine=1.12.0-0~trusty",
 			"sudo chmod 400 /home/ubuntu/test.pem",
